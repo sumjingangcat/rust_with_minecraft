@@ -1,0 +1,10 @@
+^C:\USERS\OHJH0\ONEDRIVE\바탕 화면\RUST\MINECRAFT\TARGET\DEBUG\BUILD\GLFW-SYS-3D0A6C6DEEBFD48F\OUT\BUILD\CMAKEFILES\33CACDB25F82E6695F099DD333D0ECA4\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/ohjh0/.cargo/registry/src/github.com-1ecc6299db9ec823/glfw-sys-4.0.0+3.3.5 "-BC:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/build/GLFW.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

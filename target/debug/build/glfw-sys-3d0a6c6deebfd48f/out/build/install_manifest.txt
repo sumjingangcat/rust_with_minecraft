@@ -1,0 +1,8 @@
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/glfw3.lib
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/include/GLFW/glfw3.h
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/include/GLFW/glfw3native.h
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/cmake/glfw3/glfw3Config.cmake
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/cmake/glfw3/glfw3ConfigVersion.cmake
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/cmake/glfw3/glfw3Targets.cmake
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/cmake/glfw3/glfw3Targets-debug.cmake
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/pkgconfig/glfw3.pc

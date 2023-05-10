@@ -1,0 +1,72 @@
+CMAKE_TOOLCHAIN_FILE_x86_64-pc-windows-msvc = None
+CMAKE_TOOLCHAIN_FILE_x86_64_pc_windows_msvc = None
+HOST_CMAKE_TOOLCHAIN_FILE = None
+CMAKE_TOOLCHAIN_FILE = None
+CMAKE_GENERATOR_x86_64-pc-windows-msvc = None
+CMAKE_GENERATOR_x86_64_pc_windows_msvc = None
+HOST_CMAKE_GENERATOR = None
+CMAKE_GENERATOR = None
+CMAKE_PREFIX_PATH_x86_64-pc-windows-msvc = None
+CMAKE_PREFIX_PATH_x86_64_pc_windows_msvc = None
+HOST_CMAKE_PREFIX_PATH = None
+CMAKE_PREFIX_PATH = None
+CMAKE_x86_64-pc-windows-msvc = None
+CMAKE_x86_64_pc_windows_msvc = None
+HOST_CMAKE = None
+CMAKE = None
+running: "cmake" "C:\\Users\\ohjh0\\.cargo\\registry\\src\\github.com-1ecc6299db9ec823\\glfw-sys-4.0.0+3.3.5\\." "-G" "Visual Studio 17 2022" "-Thost=x64" "-Ax64" "-DGLFW_BUILD_EXAMPLES=OFF" "-DGLFW_BUILD_TESTS=OFF" "-DGLFW_BUILD_DOCS=OFF" "-DCMAKE_INSTALL_LIBDIR=lib" "-DGLFW_BUILD_WAYLAND=OFF" "-DCMAKE_INSTALL_PREFIX=C:\\Users\\ohjh0\\OneDrive\\ë°”íƒ• í™”ë©´\\Rust\\minecraft\\target\\debug\\build\\glfw-sys-3d0a6c6deebfd48f\\out" "-DCMAKE_C_FLAGS= -nologo -MD -Brepro" "-DCMAKE_C_FLAGS_DEBUG= -nologo -MD -Brepro" "-DCMAKE_CXX_FLAGS= -nologo -MD -Brepro" "-DCMAKE_CXX_FLAGS_DEBUG= -nologo -MD -Brepro" "-DCMAKE_ASM_FLAGS= -nologo -MD -Brepro" "-DCMAKE_ASM_FLAGS_DEBUG= -nologo -MD -Brepro" "-DCMAKE_BUILD_TYPE=Debug"
+-- Selecting Windows SDK version 10.0.19041.0 to target Windows 10.0.22621.
+-- The C compiler identification is MSVC 19.32.31332.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.32.31326/bin/Hostx64/x64/cl.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - not found
+-- Found Threads: TRUE  
+-- Using Win32 for window creation
+-- Configuring done (5.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: C:/Users/ohjh0/OneDrive/ë°”íƒ• í™”ë©´/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/build
+running: "cmake" "--build" "." "--target" "install" "--config" "Debug" "--parallel" "16"
+.NET Framework¿ë Microsoft (R) Build Engine ¹öÀü 17.2.1+52cd2da31
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Checking Build System
+  Building Custom Rule C:/Users/ohjh0/.cargo/registry/src/github.com-1ecc6299db9ec823/glfw-sys-4.0.0+3.3.5/src/CMakeLists.txt
+  context.c
+  init.c
+  input.c
+  monitor.c
+  vulkan.c
+  window.c
+  win32_init.c
+  win32_joystick.c
+  win32_monitor.c
+  win32_time.c
+  win32_thread.c
+  win32_window.c
+  wgl_context.c
+  egl_context.c
+  osmesa_context.c
+  ÄÚµå¸¦ »ý¼ºÇÏ°í ÀÖ½À´Ï´Ù...
+  glfw.vcxproj -> C:\Users\ohjh0\OneDrive\¹ÙÅÁ È­¸é\Rust\minecraft\target\debug\build\glfw-sys-3d0a6c6deebfd48f\out\build\src\Debug\glfw3.lib
+  Building Custom Rule C:/Users/ohjh0/.cargo/registry/src/github.com-1ecc6299db9ec823/glfw-sys-4.0.0+3.3.5/CMakeLists.txt
+  -- Install configuration: "Debug"
+  -- Installing: C:/Users/ohjh0/OneDrive/ë°”íƒ• ?”ë©´/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/glfw3.lib
+  -- Installing: C:/Users/ohjh0/OneDrive/ë°”íƒ• ?”ë©´/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/include/GLFW
+  -- Installing: C:/Users/ohjh0/OneDrive/ë°”íƒ• ?”ë©´/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/include/GLFW/glfw3.h
+  -- Installing: C:/Users/ohjh0/OneDrive/ë°”íƒ• ?”ë©´/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/include/GLFW/glfw3native.h
+  -- Installing: C:/Users/ohjh0/OneDrive/ë°”íƒ• ?”ë©´/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/cmake/glfw3/glfw3Config.cmake
+  -- Installing: C:/Users/ohjh0/OneDrive/ë°”íƒ• ?”ë©´/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/cmake/glfw3/glfw3ConfigVersion.cmake
+  -- Installing: C:/Users/ohjh0/OneDrive/ë°”íƒ• ?”ë©´/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/cmake/glfw3/glfw3Targets.cmake
+  -- Installing: C:/Users/ohjh0/OneDrive/ë°”íƒ• ?”ë©´/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/cmake/glfw3/glfw3Targets-debug.cmake
+  -- Installing: C:/Users/ohjh0/OneDrive/ë°”íƒ• ?”ë©´/Rust/minecraft/target/debug/build/glfw-sys-3d0a6c6deebfd48f/out/lib/pkgconfig/glfw3.pc
+cargo:root=C:\Users\ohjh0\OneDrive\ë°”íƒ• í™”ë©´\Rust\minecraft\target\debug\build\glfw-sys-3d0a6c6deebfd48f\out
+cargo:rustc-link-search=native=C:\Users\ohjh0\OneDrive\ë°”íƒ• í™”ë©´\Rust\minecraft\target\debug\build\glfw-sys-3d0a6c6deebfd48f\out\lib
+cargo:rustc-link-lib=dylib=glfw3
