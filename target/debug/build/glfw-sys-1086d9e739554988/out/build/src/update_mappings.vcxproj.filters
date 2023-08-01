@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\ohjh0\OneDrive\바탕 화면\Rust\minecraft\target\debug\build\glfw-sys-1086d9e739554988\out\build\CMakeFiles\f3b3c2e0d7510c0659b179de114041c0\update_mappings.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ohjh0\.cargo\registry\src\github.com-1ecc6299db9ec823\glfw-sys-4.0.0+3.3.5\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\ohjh0\.cargo\registry\src\github.com-1ecc6299db9ec823\glfw-sys-4.0.0+3.3.5\src\mappings.h.in">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="C:\Users\ohjh0\.cargo\registry\src\github.com-1ecc6299db9ec823\glfw-sys-4.0.0+3.3.5\CMake\GenerateMappings.cmake" />
+    <None Include="C:\Users\ohjh0\OneDrive\바탕 화면\Rust\minecraft\target\debug\build\glfw-sys-1086d9e739554988\out\build\src\CMakeFiles\update_mappings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{818A5AAE-B27F-38E9-ABEB-CC075CC9D895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{733994F2-D8AF-30CD-A269-69CE88386711}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

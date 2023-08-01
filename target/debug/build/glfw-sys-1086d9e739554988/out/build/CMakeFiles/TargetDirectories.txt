@@ -1,0 +1,7 @@
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-1086d9e739554988/out/build/CMakeFiles/uninstall.dir
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-1086d9e739554988/out/build/CMakeFiles/INSTALL.dir
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-1086d9e739554988/out/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-1086d9e739554988/out/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-1086d9e739554988/out/build/src/CMakeFiles/update_mappings.dir
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-1086d9e739554988/out/build/src/CMakeFiles/glfw.dir
+C:/Users/ohjh0/OneDrive/바탕 화면/Rust/minecraft/target/debug/build/glfw-sys-1086d9e739554988/out/build/src/CMakeFiles/INSTALL.dir
