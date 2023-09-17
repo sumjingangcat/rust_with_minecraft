@@ -1,12 +1,15 @@
 pub mod renderer;
 pub mod debugging;
+pub mod shader;
 
+use crate::shader::{ShaderPart, ShaderProgram};
 use crate::renderer::{QuadProps, Renderer};
 
 use glfw::{Key, WindowEvent};
 use rand::Rng;
 use std::sync::mpsc::Receiver;
 use glfw::{Context, ffi::{glfwSwapInterval, glfwGetTime}};
+use std::ffi::CString;
 
 #[derive(Default)]
 
@@ -14,7 +17,6 @@ use glfw::{Context, ffi::{glfwSwapInterval, glfwGetTime}};
 pub struct Framerate{
     pub frame_count: u32,
     pub last_fram_time: f64,
-
 }
 
 impl Framerate{
@@ -69,6 +71,14 @@ fn main() { // we will use openGL
     // Vsync : 60fps , we can't see more than 60fps on monitor
     // Vsync = 1 : 60fps, Vsync = 2 : 30fps, Vsync = 3 : 20fps
 
+    let mut renderer = Renderer::new(100000);
+
+    let vert = ShaderPart::from_vert_source(&CString::new(include_str!("shaders/vert.vert")).unwrap()).unwrap();
+    let frag = ShaderPart::from_frag_source(&CString::new(include_str!("shaders/frag.frag")).unwrap()).unwrap();
+    let program = ShaderProgram::from_shaders(vert, frag).unwrap();
+
+    program.use_program();
+
     let mut framerate = Framerate{
         frame_count: 0,
         last_fram_time: 0.0,
@@ -76,8 +86,6 @@ fn main() { // we will use openGL
 
     let mut quads = Vec::new();
     let mut rng = rand::thread_rng();
-
-    let mut renderer = Renderer::new(100000);
 
     while !window.should_close() {
         // Poll and process events
