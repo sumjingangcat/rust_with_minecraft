@@ -1,0 +1,10 @@
+^C:\RUST_STUDY_CHRIS_OHK\CD_250217 - RUST BASIC + MAKE MINECRAFT, WEEK X\TARGET\DEBUG\BUILD\GLFW-SYS-7FB8860FC7E2FCD6\OUT\BUILD\CMAKEFILES\37391EF5BD384A07C3843E1D0E7DD654\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/ohjh0/.cargo/registry/src/index.crates.io-6f17d22bba15001f/glfw-sys-4.0.0+3.3.5 "-BC:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/build/GLFW.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

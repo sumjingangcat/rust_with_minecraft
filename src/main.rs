@@ -1,131 +1,220 @@
-pub mod renderer;
+#[macro_use]
+extern crate lazy_static;
+
+extern crate pretty_env_logger;
+#[macro_use]
+extern crate log;
+extern crate specs;
+
+#[macro_use]
 pub mod debugging;
+pub mod aabb;
+pub mod ambient_occlusion;
+pub mod block_texture_faces;
+pub mod chunk;
+pub mod chunk_manager;
+pub mod constants;
+pub mod ecs;
+pub mod gui;
+pub mod input;
+pub mod inventory;
+pub mod main_hand;
+pub mod particle_system;
+pub mod physics;
+pub mod player;
+pub mod raycast;
+pub mod renderer;
 pub mod shader;
+pub mod shapes;
+pub mod texture;
+pub mod texture_pack;
+pub mod timer;
+pub mod types;
+pub mod util;
+pub mod window;
 
-use crate::shader::{ShaderPart, ShaderProgram};
-use crate::renderer::{QuadProps, Renderer};
+use crate::chunk_manager::ChunkManager;
+use crate::debugging::*;
+use crate::physics::Interpolator;
+use crate::shader::ShaderProgram;
+use std::collections::HashMap;
+// use glfw::ffi::glfwSwapInterval;
+use crate::constants::*;
+use crate::ecs::components::*;
+use crate::ecs::systems::chunk_loading::ChunkLoading;
+use crate::ecs::systems::*;
+use crate::gui::{create_gui_icons_texture, create_widgets_texture};
+use crate::input::InputCache;
+use crate::inventory::Inventory;
+use crate::main_hand::MainHand;
+use crate::particle_system::ParticleSystem;
+use crate::player::{PlayerPhysicsState, PlayerState};
+use crate::texture_pack::generate_array_texture;
+use crate::timer::Timer;
+use crate::types::Shaders;
+use crate::window::create_window;
+use ecs::systems::fps_counter::FpsCounter;
+use nalgebra_glm::vec3;
+use parking_lot::deadlock;
+use specs::{Builder, DispatcherBuilder, World, WorldExt};
+use std::os::raw::c_void;
+use std::sync::Arc;
+use std::thread;
+use std::time::Duration;
 
-use glfw::{Key, WindowEvent};
-use rand::Rng;
-use std::sync::mpsc::Receiver;
-use glfw::{Context, ffi::{glfwSwapInterval, glfwGetTime}};
-use std::ffi::CString;
+fn main() {
+    thread::spawn(move || loop {
+        thread::sleep(Duration::from_secs(10));
 
-#[derive(Default)]
-
-// To check framerate
-pub struct Framerate{
-    pub frame_count: u32,
-    pub last_fram_time: f64,
-}
-
-impl Framerate{
-    fn run(&mut self){
-        self.frame_count += 1;
-
-        let current_time = unsafe {glfwGetTime()};
-        let delta = current_time - self.last_fram_time;
-
-        if delta >= 1.0{
-            self.last_fram_time = current_time;
-            println!("FPS: {}", f64::from(self.frame_count) / delta);
-            self.frame_count = 0;
+        let deadlocks = deadlock::check_deadlock();
+        if deadlocks.is_empty() {
+            continue;
         }
-    }
-    
-}
 
-fn main() { // we will use openGL
-    let mut glfw = glfw::init(glfw::FAIL_ON_ERRORS).unwrap(); // Init glfw
-    glfw.window_hint(glfw::WindowHint::ContextVersion(4, 6)); // OpenGL version 4.6 // major 4, minor 6
-    glfw.window_hint(glfw::WindowHint::OpenGlProfile(
-        glfw::OpenGlProfileHint::Core,
-    )); // OpenGL core profile
-    glfw.window_hint(glfw::WindowHint::OpenGlDebugContext(true));
+        println!("{} deadlocks detected", deadlocks.len());
 
-    let window_size = (500, 500);
-    let window_title = "Minecraft";
+        for (i, threads) in deadlocks.iter().enumerate() {
+            println!("Deadlock #{i}");
 
-    let (mut window, events) = glfw.
-    create_window(
-        window_size.0,
-        window_size.1,
-        window_title,
-        glfw::WindowMode::Windowed,
-    )
-    .expect("Failed to create GLFW window");
-
-    // Make the window's context current
-    window.make_current();
-    window.set_all_polling(true);
-    window.set_cursor_enter_polling(true);
-
-    // What is context?
-
-    // Context is a state of OpenGL
-    // OpenGL is a state machine
-    // OpenGL has a lot of states
-
-    gl::load_with(|symbol| window.get_proc_address(symbol) as *const _); // Load OpenGL function pointers
-    unsafe {glfwSwapInterval(0)}; // `1` means Vsync
-    // Vsync : 60fps , we can't see more than 60fps on monitor
-    // Vsync = 1 : 60fps, Vsync = 2 : 30fps, Vsync = 3 : 20fps
-
-    let mut renderer = Renderer::new(100000);
-
-    let vert = ShaderPart::from_vert_source(&CString::new(include_str!("shaders/vert.vert")).unwrap()).unwrap();
-    let frag = ShaderPart::from_frag_source(&CString::new(include_str!("shaders/frag.frag")).unwrap()).unwrap();
-    let program = ShaderProgram::from_shaders(vert, frag).unwrap();
-
-    program.use_program();
-
-    let mut framerate = Framerate{
-        frame_count: 0,
-        last_fram_time: 0.0,
-    };
-
-    let mut quads = Vec::new();
-    let mut rng = rand::thread_rng();
-
-    while !window.should_close() {
-        // Poll and process events
-        glfw.poll_events(); // check for events
-
-        // Clear the screen to black
-
-        for (_, event) in glfw::flush_messages(&events) {
-            match event{
-                glfw::WindowEvent::Key(Key::Space, _, _, _) =>{
-                    quads.push(QuadProps{
-                        position: (rng.gen_range(-1.0..1.0), rng.gen_range(-1.0..1.0)),
-                        size: (rng.gen_range(0.1..0.5), rng.gen_range(0.1..0.5)),
-                        color: (rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0), 1.0),
-                    })
-                }
-                _ => {}
+            for t in threads {
+                println!("Thread Id {:#?}", t.thread_id());
+                println!("{:#?}", t.backtrace());
             }
         }
+    });
 
-        gl_call!(gl::ClearColor(1.0, 1.0, 1.0, 1.0)); // RGBA
-        gl_call!(gl::Clear(gl::COLOR_BUFFER_BIT)); // clear color buffer
+    let mut log_builder = pretty_env_logger::formatted_builder();
+    log_builder.parse_filters(LOG_LEVEL.as_str()).init();
 
-        renderer.begin_batch();
+    let mut world = World::new();
+    world.register::<PlayerState>();
+    world.register::<Interpolator<PlayerPhysicsState>>();
+    world.register::<Inventory>();
+    world.register::<MainHand>();
+    world.register::<MainHandItemChanged>();
 
-        for quad in &quads{
-            renderer.submit_quad(quad.clone());
-        }
+    let mut dispatcher = DispatcherBuilder::new()
+        .with_thread_local({
+            let (glfw, window, events) = create_window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_NAME);
 
-        renderer.end_batch();
+            gl_call!(gl::Enable(gl::DEBUG_OUTPUT));
+            gl_call!(gl::Enable(gl::DEBUG_OUTPUT_SYNCHRONOUS));
+            gl_call!(gl::DebugMessageCallback(
+                Some(debug_message_callback),
+                std::ptr::null::<c_void>(),
+            ));
+            gl_call!(gl::DebugMessageControl(
+                gl::DONT_CARE,
+                gl::DONT_CARE,
+                gl::DONT_CARE,
+                0,
+                std::ptr::null::<u32>(),
+                gl::TRUE
+            ));
 
-        // Swap front and back buffers
-        // window.swap_buffers();
-        
-        // double buffering : front buffer, back buffer
-        window.swap_buffers(); // swap front and back buffers
+            gl_call!(gl::Enable(gl::CULL_FACE));
+            gl_call!(gl::CullFace(gl::BACK));
+            gl_call!(gl::Enable(gl::DEPTH_TEST));
+            gl_call!(gl::Enable(gl::BLEND));
+            let window_size = window.get_size();
+            gl_call!(gl::Viewport(
+                0,
+                0,
+                window_size.0,
+                window_size.1
+            ));
 
-        framerate.run();
+            ReadWindowEvents {
+                glfw,
+                window,
+                events,
+            }
+        })
+        .with_thread_local(InventoryHandleInput)
+        .with_thread_local(HandlePlayerInput)
+        .with_thread_local(UpdatePlayerState)
+        .with_thread_local(PlaceAndBreakBlocks)
+        .with_thread_local(UpdatePlayerPhysics)
+        .with_thread_local(UpdateMainHand)
+        .with_thread_local(ChunkLoading::new())
+        .with_thread_local(RenderChunks)
+        .with_thread_local(RenderParticles)
+        .with_thread_local(RenderBlockOutline::new())
+        .with_thread_local(RenderMainHand::new())
+        .with_thread_local(RenderGUI::new())
+        .with_thread_local(AdvanceGlobalTime)
+        .with_thread_local(FpsCounter::new())
+        .build();
+
+    world.insert(InputCache::default());
+    world.insert(Timer::default());
+    world.insert({
+        let (item_array_texture, texture_pack) = generate_array_texture();
+        gl_call!(gl::BindTextureUnit(0, item_array_texture));
+
+        texture_pack
+    });
+    world.insert({
+        let mut particle_systems = HashMap::new();
+        particle_systems.insert("block_particles", ParticleSystem::new(500));
+
+        particle_systems
+    });
+    world.insert({
+        let mut shaders_resource = Shaders::new();
+        shaders_resource.insert(
+            "voxel_shader",
+            ShaderProgram::compile("src/shaders/voxel.vert", "src/shaders/voxel.frag"),
+        );
+        shaders_resource.insert(
+            "gui_shader",
+            ShaderProgram::compile("src/shaders/gui.vert", "src/shaders/gui.frag"),
+        );
+        shaders_resource.insert(
+            "outline_shader",
+            ShaderProgram::compile("src/shaders/outline.vert", "src/shaders/outline.frag"),
+        );
+        shaders_resource.insert(
+            "item_shader",
+            ShaderProgram::compile("src/shaders/item.vert", "src/shaders/item.frag"),
+        );
+        shaders_resource.insert(
+            "particle_shader",
+            ShaderProgram::compile("src/shaders/particle.vert", "src/shaders/particle.frag"),
+        );
+        shaders_resource.insert(
+            "hand_shader",
+            ShaderProgram::compile("src/shaders/hand.vert", "src/shaders/hand.frag"),
+        );
+
+        shaders_resource
+    });
+    world.insert(Arc::new(ChunkManager::new()));
+
+    {
+        let gui_icons_texture = create_gui_icons_texture();
+        gl_call!(gl::ActiveTexture(gl::TEXTURE1));
+        gl_call!(gl::BindTexture(gl::TEXTURE_2D, gui_icons_texture));
+
+        let gui_widgets_texture = create_widgets_texture();
+        gl_call!(gl::ActiveTexture(gl::TEXTURE2));
+        gl_call!(gl::BindTexture(gl::TEXTURE_2D, gui_widgets_texture));
+    }
+
+    let _player = world
+        .create_entity()
+        .with(PlayerState::new())
+        .with(Interpolator::new(
+            1.0 / PHYSICS_TICKRATE,
+            PlayerPhysicsState::new_at_position(vec3(8.0, 195.0, 8.0)),
+        ))
+        .with(Inventory::new())
+        .with(MainHand::new())
+        .with(MainHandItemChanged)
+        .build();
+
+    // Loop until the user closes the window
+    loop {
+        dispatcher.dispatch(&world);
     }
 }
-
-// 준비물
-// 1. CMake

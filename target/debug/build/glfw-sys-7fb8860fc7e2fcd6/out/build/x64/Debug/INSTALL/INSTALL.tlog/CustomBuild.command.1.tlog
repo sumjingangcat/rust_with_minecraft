@@ -1,0 +1,10 @@
+^C:\RUST_STUDY_CHRIS_OHK\CD_250217 - RUST BASIC + MAKE MINECRAFT, WEEK X\TARGET\DEBUG\BUILD\GLFW-SYS-7FB8860FC7E2FCD6\OUT\BUILD\CMAKEFILES\37391EF5BD384A07C3843E1D0E7DD654\INSTALL_FORCE.RULE
+setlocal
+cd .
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

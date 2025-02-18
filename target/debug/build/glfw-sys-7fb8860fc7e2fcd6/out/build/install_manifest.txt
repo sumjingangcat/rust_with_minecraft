@@ -1,0 +1,8 @@
+C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/lib/glfw3.lib
+C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/include/GLFW/glfw3.h
+C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/include/GLFW/glfw3native.h
+C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/lib/cmake/glfw3/glfw3Config.cmake
+C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/lib/cmake/glfw3/glfw3ConfigVersion.cmake
+C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/lib/cmake/glfw3/glfw3Targets.cmake
+C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/lib/cmake/glfw3/glfw3Targets-debug.cmake
+C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/lib/pkgconfig/glfw3.pc

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\rust_study_chris_ohk\cd_250217 - Rust Basic + Make Minecraft, Week X\target\debug\build\glfw-sys-7fb8860fc7e2fcd6\out\build\CMakeFiles\37391ef5bd384a07c3843e1d0e7dd654\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{AA847C5A-5109-3768-8010-B30E723DF29C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

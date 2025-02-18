@@ -1,0 +1,13 @@
+prefix=C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out
+exec_prefix=${prefix}
+includedir=C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/include
+libdir=C:/rust_study_chris_ohk/cd_250217 - Rust Basic + Make Minecraft, Week X/target/debug/build/glfw-sys-7fb8860fc7e2fcd6/out/lib
+
+Name: GLFW
+Description: A multi-platform library for OpenGL, window and input
+Version: 3.3.5
+URL: https://www.glfw.org/
+Requires.private: 
+Libs: -L${libdir} -lglfw3
+Libs.private:  -lgdi32
+Cflags: -I${includedir}

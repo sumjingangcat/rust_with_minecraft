@@ -1,27 +1,43 @@
-use std::ffi::c_void;
-
 use crate::gl_call;
+use crate::shader::ShaderProgram;
+use itertools::Itertools;
+use std::cmp::Ordering;
+use std::collections::HashMap;
+use std::os::raw::c_void;
 
-#[derive(Clone)]
-
-pub struct QuadProps{
-    pub position: (f32, f32),
+#[derive(Clone, Debug)]
+pub struct QuadProps {
+    pub position: (f32, f32, f32),
     pub size: (f32, f32),
-    pub color: (f32, f32, f32, f32),
+    pub texture_id: u32,
+    pub texture_coords: (f32, f32, f32, f32),
 }
 
-pub struct Renderer{
+pub struct Renderer {
+    texture_units: u32,
+    quads: HashMap<u32, Vec<QuadProps>>,
     vertices: Vec<f32>,
-    vbo: u32, // Vertex Buffer Object :: GPU memory buffer
-    // if we draw a lot of objects, we can use one VBO
-    vao: u32, // Vertex Array Object :: contains information about VBO, composed of VBOs
-    // contains information about VBO
+    vbo: u32,
+    vao: u32,
+}
+
+impl Default for Renderer {
+    fn default() -> Self {
+        Renderer::new(1_000_000)
+    }
 }
 
 impl Renderer {
-    pub fn new(capacity: usize)-> Self {
-        let mut vertices = Vec::new();
-        vertices.reserve(capacity);
+    pub fn new(capacity: usize) -> Self {
+        let mut texture_units: i32 = 0;
+        gl_call!(gl::GetIntegerv(
+            gl::MAX_TEXTURE_IMAGE_UNITS,
+            &mut texture_units
+        ));
+        assert!(texture_units > 0);
+
+        let texture_units = texture_units as u32;
+        let quads: HashMap<u32, Vec<QuadProps>> = HashMap::new();
 
         // Setup VBO
         let mut vbo = 0;
@@ -29,104 +45,164 @@ impl Renderer {
 
         gl_call!(gl::NamedBufferData(
             vbo,
-            (capacity * std::mem::size_of::<f32>()) as isize, // size of buffer
-            // why isize? , Find it! 
+            (capacity * std::mem::size_of::<f32>()) as isize,
             std::ptr::null(),
-            gl::DYNAMIC_DRAW,
+            gl::DYNAMIC_DRAW
         ));
 
         // Setup VAO
         let mut vao = 0;
-        let mut binding_index_pos = 0;
-        let mut binding_index_color = 1;
+        let binding_index_pos = 0;
+        let binding_index_color = 1;
 
-        // (x, y, r, g, b, a) * 6
+        gl_call!(gl::CreateVertexArrays(1, &mut vao));
 
         // Position
-        gl_call!(gl::CreateVertexArrays(1, &mut vao));
-        
         gl_call!(gl::EnableVertexArrayAttrib(vao, 0));
         gl_call!(gl::VertexArrayAttribFormat(
             vao,
-            0, // index
-            2, // size
+            0,
+            3,
             gl::FLOAT,
             gl::FALSE,
-            0, // offset
+            0
         ));
 
         gl_call!(gl::VertexArrayAttribBinding(vao, 0, binding_index_pos));
-        gl_call!(gl::VertexArrayVertexBuffer( // binding buffer to VAO
+        gl_call!(gl::VertexArrayVertexBuffer(
             vao,
             binding_index_pos,
             vbo,
             0,
-            (6 * std::mem::size_of::<f32>()) as i32, // stride
+            (6 * std::mem::size_of::<f32>()) as i32
         ));
 
         // Color
         gl_call!(gl::EnableVertexArrayAttrib(vao, 1));
         gl_call!(gl::VertexArrayAttribFormat(
             vao,
-            1, // index
-            4, // size
+            1,
+            3,
             gl::FLOAT,
             gl::FALSE,
-            (2 * std::mem::size_of::<f32>()) as u32, // offset
+            (3 * std::mem::size_of::<f32>()) as u32
         ));
-        
+
         gl_call!(gl::VertexArrayAttribBinding(vao, 1, binding_index_color));
         gl_call!(gl::VertexArrayVertexBuffer(
             vao,
             binding_index_color,
             vbo,
             0,
-            (6 * std::mem::size_of::<f32>()) as i32, // stride
+            (6 * std::mem::size_of::<f32>() as isize) as i32
         ));
 
-        return Renderer {
-            vertices,
+        Renderer {
+            texture_units,
+            quads,
+            vertices: Vec::with_capacity(capacity),
             vbo,
             vao,
-        };
+        }
     }
 
-    // 데이터에 넣는 것을 "배치"라고 함. -> into english :  "batch"
-    pub fn begin_batch(&mut self){
+    pub fn begin_batch(&mut self) {
+        self.quads.clear();
         self.vertices.clear();
     }
 
-    pub fn submit_quad(&mut self, quad_props: QuadProps){
-        let QuadProps{position: (x, y), size:(w, h), color: (r, g, b, a)} = quad_props;
-
-        self.vertices.extend_from_slice(&[x, y, r, g, b, a]);
-        self.vertices.extend_from_slice(&[x + w, y, r, g, b, a]);
-        self.vertices.extend_from_slice(&[x + w, y + h, r, g, b, a]);
-        self.vertices.extend_from_slice(&[x, y, r, g, b, a]);
-        self.vertices.extend_from_slice(&[x + w, y + h, r, g, b, a]);
-        self.vertices.extend_from_slice(&[x, y + h, r, g, b, a]);
+    pub fn submit_quad(&mut self, quad_props: QuadProps) {
+        match self.quads.get_mut(&quad_props.texture_id) {
+            Some(quads) => quads,
+            None => {
+                self.quads.insert(quad_props.texture_id, Vec::new());
+                self.quads.get_mut(&quad_props.texture_id).unwrap()
+            }
+        }
+        .push(quad_props);
     }
 
-    pub fn end_batch(&mut self){
-        gl_call!(gl::NamedBufferSubData(
-            self.vbo,
-            0,
-            (self.vertices.len() * std::mem::size_of::<f32>()) as isize,
-            self.vertices.as_ptr() as *mut c_void,
-        ));
+    pub fn end_batch(&mut self, program: &mut ShaderProgram) {
+        let mut draw_calls = 0;
 
-        gl_call!(gl::BindVertexArray(self.vao)); // vao binding : must be called before draw call
-        gl_call!(gl::DrawArrays(
-            gl::TRIANGLES,
-            0,
-            self.vertices.len() as i32,
-        ));
+        // TODO: Handle quads without textures
+
+        for vec in self.quads.values_mut() {
+            vec.sort_by(|a, b| {
+                if a.position.2 < b.position.2 {
+                    Ordering::Less
+                } else {
+                    Ordering::Greater
+                }
+            });
+        }
+
+        let chunks = &self.quads.keys().chunks(self.texture_units as usize);
+
+        for chunk in chunks {
+            let mut tex_units = Vec::new();
+            self.vertices.clear();
+
+            for (tex_unit, &texture_id) in chunk.enumerate() {
+                for quad in &self.quads[&texture_id] {
+                    let QuadProps {
+                        position: (x, y, z),
+                        size: (w, h),
+                        texture_id: _,
+                        texture_coords: (tex_x_min, tex_y_min, tex_x_max, tex_y_max),
+                    } = *quad;
+
+                    let tex_unit = tex_unit as f32;
+                    self.vertices
+                        .extend_from_slice(&[x, y, z, tex_unit, tex_x_min, tex_y_min]);
+                    self.vertices
+                        .extend_from_slice(&[x + w, y, z, tex_unit, tex_x_max, tex_y_min]);
+                    self.vertices.extend_from_slice(&[
+                        x + w,
+                        y + h,
+                        z,
+                        tex_unit,
+                        tex_x_max,
+                        tex_y_max,
+                    ]);
+                    self.vertices.extend_from_slice(&[
+                        x + w,
+                        y + h,
+                        z,
+                        tex_unit,
+                        tex_x_max,
+                        tex_y_max,
+                    ]);
+                    self.vertices
+                        .extend_from_slice(&[x, y + h, z, tex_unit, tex_x_min, tex_y_max]);
+                    self.vertices
+                        .extend_from_slice(&[x, y, z, tex_unit, tex_x_min, tex_y_min]);
+                }
+
+                gl_call!(gl::BindTextureUnit(tex_unit as u32, texture_id));
+
+                tex_units.push(tex_unit as i32);
+            }
+
+            program.set_uniform1iv("textures", tex_units.as_slice());
+
+            gl_call!(gl::NamedBufferSubData(
+                self.vbo,
+                0_isize,
+                (self.vertices.len() * std::mem::size_of::<f32>()) as isize,
+                self.vertices.as_ptr() as *mut c_void
+            ));
+
+            gl_call!(gl::BindVertexArray(self.vao));
+            gl_call!(gl::DrawArrays(
+                gl::TRIANGLES,
+                0,
+                (self.vertices.len() / 6) as i32
+            ));
+
+            draw_calls += 1;
+        }
+
+        println!("Total draw calls: {draw_calls}");
     }
-
 }
-
-// 1. glBindAttribLocation
-// 2. C/C++ : glVertexAttribPointer
-// 3. glEnableVertexAttribArray
-// 4. glDrawArrays
-// 5. glDisableVertexAttribArray

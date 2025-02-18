@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\rust_study_chris_ohk\cd_250217 - Rust Basic + Make Minecraft, Week X\target\debug\build\glfw-sys-7fb8860fc7e2fcd6\out\build\CMakeFiles\57c138fbf638c7c5f19f9bfa8297b626\update_mappings.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ohjh0\.cargo\registry\src\index.crates.io-6f17d22bba15001f\glfw-sys-4.0.0+3.3.5\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\ohjh0\.cargo\registry\src\index.crates.io-6f17d22bba15001f\glfw-sys-4.0.0+3.3.5\src\mappings.h.in">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="C:\Users\ohjh0\.cargo\registry\src\index.crates.io-6f17d22bba15001f\glfw-sys-4.0.0+3.3.5\CMake\GenerateMappings.cmake" />
+    <None Include="C:\rust_study_chris_ohk\cd_250217 - Rust Basic + Make Minecraft, Week X\target\debug\build\glfw-sys-7fb8860fc7e2fcd6\out\build\src\CMakeFiles\update_mappings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{AA847C5A-5109-3768-8010-B30E723DF29C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{FB6E5EC9-1648-38CC-9C61-F69641B7A85F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
